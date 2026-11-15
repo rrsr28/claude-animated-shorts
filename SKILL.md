@@ -151,7 +151,7 @@ The reference uses realistic PBR lighting under cartoon cards; our toon/ink rend
 - `story.js` exports SHOTS, `shotAt`, `camAt`, `dofAt`, LIGHTS/`lightFor`, `worldAt`, `actorsAt(f, T)`, `fxAt(f, T)`. All are pure functions of the frame.
 - `render.mjs`: Playwright → `renderFrame(f)` → `toDataURL('image/jpeg', .95)` → `frames/f0000.jpg`.
 - `mix.py`: gated-RMS level lock (music and SFX at 50 % of the voice). `finish.sh`: linear loudness gain, limiter, encode, QA.
-- Characters: the Pen API from mromidev/claude-animated-shorts `templates/bridge/toon.ts`, extended in the same module scope by the cast file.
+- Characters: the Pen API from rrsr28/claude-animated-shorts `templates/bridge/toon.ts`, extended in the same module scope by the cast file.
 ## Learning loop (this is the skill's memory; Claude does not remember between chats)
 - `kit/LEARNINGS.md` is the running log of what went wrong, what the user liked, and what fixed it. READ it at the start of every video and apply it.
 - After every feedback round (user timestamps, complaints, praise, new reference videos), append 1-3 lines to `kit/LEARNINGS.md` (date, problem → cause → rule), update the Quality playbook if the rule is general, and send the user the updated `SKILL.md` + `kit/LEARNINGS.md` (or the whole zip) so they can re-install it. Tell them in one line to replace the old copy.
