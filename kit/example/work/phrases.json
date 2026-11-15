@@ -1,0 +1,359 @@
+{
+ "duration": 72.84,
+ "frames30": 2185,
+ "source": "silence-align (cost 1.54)",
+ "segments": [
+  [
+   0.202333,
+   1.20292
+  ],
+  [
+   1.41067,
+   2.56729
+  ],
+  [
+   2.88108,
+   4.39596
+  ],
+  [
+   5.08008,
+   5.60708
+  ],
+  [
+   5.88413,
+   9.02308
+  ],
+  [
+   9.76125,
+   12.0248
+  ],
+  [
+   12.2478,
+   13.0823
+  ],
+  [
+   13.7727,
+   15.579
+  ],
+  [
+   15.7166,
+   16.3579
+  ],
+  [
+   16.6439,
+   18.6031
+  ],
+  [
+   19.3425,
+   20.685
+  ],
+  [
+   20.8145,
+   21.5771
+  ],
+  [
+   21.7175,
+   21.9335
+  ],
+  [
+   22.6306,
+   23.5033
+  ],
+  [
+   24.2051,
+   25.4258
+  ],
+  [
+   25.6368,
+   26.8807
+  ],
+  [
+   27.0907,
+   27.8954
+  ],
+  [
+   28.6292,
+   29.8277
+  ],
+  [
+   31.0002,
+   33.0678
+  ],
+  [
+   33.317,
+   33.6811
+  ],
+  [
+   33.8938,
+   35.2073
+  ],
+  [
+   35.9061,
+   38.2405
+  ],
+  [
+   38.5289,
+   39.8824
+  ],
+  [
+   40.6268,
+   41.0388
+  ],
+  [
+   41.2458,
+   43.3133
+  ],
+  [
+   43.5492,
+   44.4181
+  ],
+  [
+   45.126,
+   46.1316
+  ],
+  [
+   46.9637,
+   47.265
+  ],
+  [
+   47.5958,
+   49.4481
+  ],
+  [
+   49.7401,
+   50.9445
+  ],
+  [
+   51.7481,
+   54.2387
+  ],
+  [
+   54.5697,
+   55.7626
+  ],
+  [
+   56.0156,
+   58.0903
+  ],
+  [
+   58.8252,
+   60.6943
+  ],
+  [
+   61.8444,
+   63.0744
+  ],
+  [
+   63.319,
+   64.3608
+  ],
+  [
+   65.1664,
+   65.4794
+  ],
+  [
+   65.7189,
+   68.7302
+  ],
+  [
+   69.4611,
+   69.9756
+  ],
+  [
+   70.1182,
+   72.1388
+  ]
+ ],
+ "phrases": [
+  {
+   "text": "Once upon a time,",
+   "s": 0.202,
+   "e": 1.203
+  },
+  {
+   "text": "in a small Indian village,",
+   "s": 1.411,
+   "e": 2.567
+  },
+  {
+   "text": "six blind men lived together.",
+   "s": 2.881,
+   "e": 4.396
+  },
+  {
+   "text": "One day,",
+   "s": 5.08,
+   "e": 5.607
+  },
+  {
+   "text": "they heard that a royal elephant had arrived at the village temple.",
+   "s": 5.884,
+   "e": 9.023
+  },
+  {
+   "text": "Curious to discover what an elephant looked like,",
+   "s": 9.761,
+   "e": 12.025
+  },
+  {
+   "text": "they went to see it.",
+   "s": 12.248,
+   "e": 13.082
+  },
+  {
+   "text": "The first man touched its huge side and exclaimed,",
+   "s": 13.773,
+   "e": 16.358
+  },
+  {
+   "text": "\u201cAn elephant is just like a giant wall!\u201d",
+   "s": 16.644,
+   "e": 18.603
+  },
+  {
+   "text": "The second touched its sharp tusk and said,",
+   "s": 19.343,
+   "e": 21.577
+  },
+  {
+   "text": "\u201cNo!",
+   "s": 21.718,
+   "e": 21.933
+  },
+  {
+   "text": "It is like a spear!\u201d",
+   "s": 22.631,
+   "e": 23.503
+  },
+  {
+   "text": "The third held its long,",
+   "s": 24.205,
+   "e": 25.426
+  },
+  {
+   "text": "twisting trunk and shouted,",
+   "s": 25.637,
+   "e": 26.881
+  },
+  {
+   "text": "\u201cYou are all wrong!",
+   "s": 27.091,
+   "e": 27.895
+  },
+  {
+   "text": "It is just like a snake!\u201d",
+   "s": 28.629,
+   "e": 29.828
+  },
+  {
+   "text": "The fourth felt its strong leg and said,",
+   "s": 31.0,
+   "e": 33.068
+  },
+  {
+   "text": "\u201cSurely,",
+   "s": 33.317,
+   "e": 33.681
+  },
+  {
+   "text": "an elephant is like a tree!\u201d",
+   "s": 33.894,
+   "e": 35.207
+  },
+  {
+   "text": "The fifth touched its large ear and declared,",
+   "s": 35.906,
+   "e": 38.24
+  },
+  {
+   "text": "\u201cIt is clearly like a hand fan!\u201d",
+   "s": 38.529,
+   "e": 39.882
+  },
+  {
+   "text": "Finally,",
+   "s": 40.627,
+   "e": 41.039
+  },
+  {
+   "text": "the sixth held its swinging tail and laughed,",
+   "s": 41.246,
+   "e": 43.313
+  },
+  {
+   "text": "\u201cHow can you not see?",
+   "s": 43.549,
+   "e": 44.418
+  },
+  {
+   "text": "It is just like a rope!\u201d",
+   "s": 45.126,
+   "e": 46.132
+  },
+  {
+   "text": "Soon,",
+   "s": 46.964,
+   "e": 47.265
+  },
+  {
+   "text": "the six men began arguing loudly,",
+   "s": 47.596,
+   "e": 49.448
+  },
+  {
+   "text": "each believing he was right.",
+   "s": 49.74,
+   "e": 50.944
+  },
+  {
+   "text": "A wise old villager passing by smiled and said,",
+   "s": 51.748,
+   "e": 54.239
+  },
+  {
+   "text": "\u201cYou are all partly right,",
+   "s": 54.57,
+   "e": 55.763
+  },
+  {
+   "text": "but none of you understands the whole elephant.",
+   "s": 56.016,
+   "e": 58.09
+  },
+  {
+   "text": "You have each felt only one part!\u201d",
+   "s": 58.825,
+   "e": 60.694
+  },
+  {
+   "text": "The six men fell silent,",
+   "s": 61.844,
+   "e": 63.074
+  },
+  {
+   "text": "realising their mistake.",
+   "s": 63.319,
+   "e": 64.361
+  },
+  {
+   "text": "Moral:",
+   "s": 65.166,
+   "e": 65.479
+  },
+  {
+   "text": "We should never judge the whole picture from just one perspective.",
+   "s": 65.719,
+   "e": 68.73
+  },
+  {
+   "text": "Sometimes,",
+   "s": 69.461,
+   "e": 69.976
+  },
+  {
+   "text": "everyone has a little piece of the truth!",
+   "s": 70.118,
+   "e": 72.139
+  }
+ ]
+}
