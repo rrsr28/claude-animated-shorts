@@ -13,7 +13,7 @@ The look: flat 2D bean-head cartoon characters (canvas-drawn "cards" with plum o
 - No captions unless the user asks. Diegetic text (a carved message, a sign) is fine, and it must read correctly (not mirrored).
 - Never edit or re-time the voice. The picture is timed to it, and every visual reaction lands 0-3 frames before its word.
 - **Audio levels:** music at 50 % of the voice level (−6 dB, gated RMS). SFX at 50 % or slightly less, peaks capped so no hit pokes out over the narration. Always mix with `mix.py`, never by hand. No ducking or compression; only one linear gain plus a peak limiter on the whole mix.
-- Keep the user informed with a task list. Send a stills contact sheet before the long render.
+- Keep the user informed with a task list.
 
 ## Single stage: intake
 This skill has ONE entry point. The user gives the **voiceover audio** and the **script text**.
@@ -29,18 +29,20 @@ Do everything from here without stopping. Ask only if the voiceover and script c
 
 ### 0 Get the kit
 The kit ships INSIDE this skill folder at `kit/` (a complete working project: engine, generic camera/arm helpers `web/cam.js`, motion helpers, painters, three.js r160 vendored, cast, tools, and `example/` = the finished "Blind Men and the Elephant" inputs). Treat `kit/` as read-only: `cp -r <skill>/kit ~/shorts/<slug>` and work in the copy. Find the skill folder with `find / -name SKILL.md -path "*cartoon-audio-short*" 2>/dev/null`.
+- **If `kit/` is missing from the skill folder**, the kit is in the GitHub repo `github.com/rrsr28/claude-animated-shorts` (folder `kit/`): clone it (github.com is reachable from the cloud workspace) and use that.
+- **If the user keeps a shared kit on their computer** (e.g. `Documents/cartoon-shorts/kit/`), treat it as READ-ONLY, same as `kit/` above. Never edit it. For each video, work in a copy: the user runs `cp -r kit <slug>` once (or Claude gives them that command), then Claude writes the per-story files into `<slug>/`.
 - **Keep for every story (never rewrite):** `web/index.html`, `web/motion.js`, `web/cam.js`, `web/paint.js`, `web/toonbase.js`, the engine sections of `web/main.js` (toon materials, ink pass, instanced grass, cards, post, `applyLight`, `drawActors`, `swapForNd`, `renderFrame`), and the tools (`render.mjs`, `render_local.mjs`, `run_all.sh`, `rerender.sh`, `audit.mjs`, `sheet.py`, `timing.py`, `mix.py`, `finish.sh`).
 - **Replace per story:** `web/story.js` (shots, cameras, actors, effects; use `example/` or the old `web/story.js` as the pattern), the world section in `web/main.js` + `web/world_new.js`, outfits/props in `web/roman.js`, the cue table in `audio.py`, `title.txt`, and the inputs `voice.mp3` + `script.txt`.
 - Requirements in the cloud workspace: Node 22+, Python 3 with numpy + Pillow, ffmpeg, Playwright with Chromium (pre-installed). Never disable TLS or route around the proxy.
-- Cloud stills use `--use-angle=swiftshader` CPU WebGL (4-9 s/frame): only for check frames, never for the full video.
 
 ### Rendering is done by the USER on their Mac (default, always)
 Never run the full render yourself and do not spend tokens or time on it. Your job is everything up to the render:
 1. Build the story files in the project folder.
-2. Check quality with `node audit.mjs` and at most ~8-12 still frames in the cloud (contact sheet via `sheet.py`); send the sheet.
+2. Check quality with `node audit.mjs` and the self-review below. Do not render or view image frames.
 3. Deliver the project, then give the user ONLY the commands to run.
 **Where files go:**
 - If the session is linked to the user's computer (mcp__remote-devices tools present and a call succeeds): use `~/Downloads/cartoon-shorts/` (use it if it exists, create it if not), put the project in `~/Downloads/cartoon-shorts/<slug>/` (copy `kit/` there), write the new files into it, and tell the user in plain words where it is.
+- If the user has a filesystem MCP (check `list_allowed_directories`; work only inside the directories it lists): write the per-story files into `<allowed dir>/cartoon-shorts/<slug>/` (`story.js`, `audio.py`, `script.txt`, `title.txt`, `PROGRESS.md`, and any other file the MCP can write). **If a file cannot be written through the MCP (binary, too large, or the write fails), do not stall: output the project as a zip and give the unzip/run commands below.**
 - If not linked (the free plan cannot link): zip the project and send it with SendUserFile, then give the unzip/copy commands below.
 **Commands to give the user (plain words, nothing else):**
 ```
@@ -96,14 +98,13 @@ Keep the engine sections: toon materials, ink contract, `add`/`tbox`, sky, light
 - **Walks**: `walk()` gives distance + step phase. Feet planted, bob 3-7 %.
 - **Lens**: DOF on close-ups and mediums (cInf 8-14 px), focus on the eyes. Wides are sharp. Racks take ~14 f.
 
-### 6 Look check (before the full render)
-Render stills at each shot's middle plus the transitions and key actions: `node render.mjs stills/a "5,40,..."` then `python3 sheet.py stills/a stills/sheet_a.jpg`. Look at the sheet and fix these traps:
+### 6 Look check (before the full render, by reading the code and the audit; no image review)
+Check the story against these traps:
 - **Narrow vertical frame**: horizontal half-width = d·tan(hfov/2), with hfov = 2·atan(tan(vfov/2)·0.5625). At 4 m and fov 40 that is ±0.8 m, so stage characters in depth.
 - Railings or posts across faces (camera inside the rail or ~2.5 m up). The camera path through houses, roofs or bushes. Foreground props under ~2 m away. The hero hidden behind a pillar.
 - Mirrored text. A detached-part card offset the wrong way.
 - Extrude material groups: 0 = caps, 1 = sides+top.
 - Missing ink: debug the edge-only output. Ink radius ~2.5 px at 1080. The sky counts as far depth, not a card.
-Send the sheet to the user with a one-line shot summary, then start the full render.
 
 ### 7 Sound (`audio.py` → stems → `mix.py`)
 Rewrite the cue table for the story; the synths stay. `audio.py` writes only stems (`music.wav`, `sfx.wav`).
@@ -114,7 +115,7 @@ Rewrite the cue table for the story; the synths stay. `audio.py` writes only ste
 
 ### 8 Hand-off (the user renders)
 - **Keep the final message SHORT**: one line saying the files are ready and where, then only the commands. No recap of the work, no feature list.
-- Do NOT render the full video or run `finish.sh` yourself. Make sure `title.txt`, `voice.mp3`, `script.txt`, `audio.py` and `story.js` (with correct `TOTAL` = round(duration x 30)) are in the project, run `node audit.mjs` and the check stills, then follow "Rendering is done by the USER" above.
+- Do NOT render the full video or run `finish.sh` yourself. Make sure `title.txt`, `voice.mp3`, `script.txt`, `audio.py` and `story.js` (with correct `TOTAL` = round(duration x 30)) are in the project, run `node audit.mjs`, then follow "Rendering is done by the USER" above.
 - `run_all.sh` builds the audio (`audio.py` + `mix.py`: levels −6 dB gated RMS music, SFX capped), renders, and `finish.sh` applies one linear gain to about −14 LUFS with a −1 dBFS limiter, encodes H.264 CRF 17 + AAC, and runs freeze/black and loudness QA. Ask the user to send `out/qa_sheet.jpg` or timestamps if something looks wrong.
 - When the user returns with the finished video and notes, fix and resend only changed files.
 
@@ -132,7 +133,6 @@ Rules that follow:
 5. **Wide shots**: tight the group, fov ~50, low camera. In a narrow vertical frame empty ground makes people tiny; keep subjects large.
 6. **Every frame busy**: grass, dust, leaves, banners, light shafts; vary shot size (wide → medium → macro insert → reaction); give each beat a different light/colour mood; add a dusk/night arc when the story allows.
 7. **Distinct crowd**: different headgear, hair, colours, expressions per character.
-8. Send the user a stills contact sheet BEFORE the long render, then again for any fix.
 
 ## Known limits (be honest with the user)
 The reference uses realistic PBR lighting under cartoon cards; our toon/ink renderer is flatter. Gaps still open: textured brick/stone painters, light shafts, volumetric dusk/night grading, richer faces, macro prop inserts, rigged (not blocky) animals. Work through them in that order when the user wants more quality.
@@ -152,7 +152,28 @@ The reference uses realistic PBR lighting under cartoon cards; our toon/ink rend
 - `render.mjs`: Playwright → `renderFrame(f)` → `toDataURL('image/jpeg', .95)` → `frames/f0000.jpg`.
 - `mix.py`: gated-RMS level lock (music and SFX at 50 % of the voice). `finish.sh`: linear loudness gain, limiter, encode, QA.
 - Characters: the Pen API from rrsr28/claude-animated-shorts `templates/bridge/toon.ts`, extended in the same module scope by the cast file.
+## Richness by default (do this on every video, without being asked)
+Never leave a scene plain. Before writing `story.js`, read the script and list every setting, object, animal, action, emotion and time of day it names (the "story inventory"). Then:
+- **World:** every setting in the inventory gets its own set pieces and props that belong to it (market stalls, a palace with domes and a couch, banners, pots, trees, carts, lanterns...), not just the generic ground and sky. Put props in the foreground and background of every shot. Hills, mountains, trees, houses, painted clouds, grass, dust, leaves and drifting petals in all outdoor shots.
+- **Characters:** every character gets a distinct outfit, headgear, colour and personality. Crowds are all different. Faces are very expressive and change with every beat; hands and bodies act out the words (pointing, flexing, hugging, shrugging), never standing still.
+- **Props carry the story:** each sentence has something visible that illustrates it literally (an icon bubble, a set piece, a gag), plus an effect or SFX on the key word.
+- **Light and mood:** each act gets its own lighting; add a golden hour, dusk or night arc where the story allows, and warm light on the emotional payoff.
+- **Camera:** vary shot size (wide, medium, macro insert, reaction), keep the camera low and close with foreground props, use short pans, pushes and rolls, and a calm drifting hold between them.
+- **Budget:** if the free limit looks tight, keep this order and drop from the bottom: (1) every sentence illustrated, (2) distinct characters and expressions, (3) set pieces per setting, (4) light arc, (5) extra ambient detail. Record in `PROGRESS.md` what was left out and offer to add it later.
+
+## Progress file and resuming (the user is on a free plan: the usage limit can run out mid-build)
+- Keep `PROGRESS.md` in the video folder (project root). Create it right after timing and update it at every milestone: timing, story, audio, self-review, delivery. Each entry says what is DONE, what is NEXT, any known issues, and the exact command(s) to run.
+- Write it to the user's folder through the MCP when one is available, and include it in the zip otherwise.
+- When the user says "continue where you left off" (or similar): first read `PROGRESS.md`, `SHOT_LIST.md` and `LEARNINGS.md` in the video folder (ask for the folder path or the zip if you cannot find them), then resume at the first NEXT item. Never redo finished work.
+- Do not wait until the end to save progress: if the limit may run out, write `PROGRESS.md` before starting a long step.
+
+## Self-review without rendering (do this before delivering)
+Do not render frames to check quality (it is slow and uses the free limit). Instead:
+1. Run `node audit.mjs`. It projects every character through the camera on every frame with no rendering. Ignore flags that are intentional (close-ups that leave other characters out of frame); fix the rest.
+2. Read the finished `story.js` like a reviewer and judge it as a viewer would: does each shot's camera frame its main subject (solver boxes use the real positions, including walk-ins and bubbles)? Does anyone get blocked by a character in front? Does every spoken beat have a visual landing 0-3 frames early? Are frame ranges contiguous and equal to TOTAL? Do icons, bubbles and effects match what the voice says at that moment?
+3. Fix problems found, re-run the audit, at most two rounds. Note anything left in `PROGRESS.md`.
+
 ## Learning loop (this is the skill's memory; Claude does not remember between chats)
-- `kit/LEARNINGS.md` is the running log of what went wrong, what the user liked, and what fixed it. READ it at the start of every video and apply it.
+- `kit/LEARNINGS.md` (or `LEARNINGS.md` in the user's `cartoon-shorts` folder if they keep one shared) is the running log of what went wrong, what the user liked, and what fixed it. READ it at the start of every video and apply it.
 - After every feedback round (user timestamps, complaints, praise, new reference videos), append 1-3 lines to `kit/LEARNINGS.md` (date, problem → cause → rule), update the Quality playbook if the rule is general, and send the user the updated `SKILL.md` + `kit/LEARNINGS.md` (or the whole zip) so they can re-install it. Tell them in one line to replace the old copy.
 - Reference videos: analyse frames and optical-flow numbers, write the measured findings to LEARNINGS.md, and encode them as presets in `cam.js`/story patterns. Copy style, never content.
